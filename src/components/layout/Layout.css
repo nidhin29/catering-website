@@ -1,0 +1,25 @@
+.layout-container {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+  background: var(--bg-deep);
+  position: relative;
+}
+
+.main-viewport {
+  flex: 1;
+  overflow-y: auto;
+  min-width: 0; /* Important for flex child with overflow */
+}
+
+.content-wrap {
+  padding: 32px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+  .content-wrap {
+    padding: 16px;
+  }
+}
