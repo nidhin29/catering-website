@@ -25,6 +25,7 @@ const MainDashboard = () => {
     revenue: [],
     totalOwners: 0,
     totalBookings: 0,
+    totalRevenue: 0,
     loading: true,
     error: ''
   });
@@ -32,39 +33,32 @@ const MainDashboard = () => {
   useEffect(() => {
     const fetchAnalytics = async () => {
       try {
-        const data = await apiRequest('/api/v1/admin/analytics/revenue');
-        // Backend returns an array of { _id (month), totalRevenue, count }
+        const response = await apiRequest('/api/v1/admin/dashboard-stats');
+        const data = response.data || response;
+        
         const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
         
-        const formattedRevenue = (data.data || data).map(item => ({
+        const formattedRevenue = (data.revenueTrend || []).map(item => ({
           name: monthNames[item._id - 1] || `Month ${item._id}`,
           amount: item.totalRevenue,
-          count: item.count
+          count: item.bookingCount
         }));
 
         setAnalytics({
           revenue: formattedRevenue,
-          totalOwners: 0, // Will fetch separately or from same endpoint if updated
-          totalBookings: formattedRevenue.reduce((acc, curr) => acc + curr.count, 0),
+          totalOwners: data.totalOwners ?? 0,
+          totalBookings: data.totalBookings ?? 0,
+          totalRevenue: data.totalRevenue ?? 0,
           loading: false,
           error: ''
         });
-
-        // Fetch other stats
-        const ownersData = await apiRequest('/api/v1/admin/view_all_owners');
-        const ownersCount = (ownersData.owners || ownersData.data || []).length;
-        
-        setAnalytics(prev => ({
-          ...prev,
-          totalOwners: ownersCount
-        }));
 
       } catch (err) {
         console.error('Failed to fetch analytics:', err);
         setAnalytics(prev => ({ 
           ...prev, 
           loading: false, 
-          error: 'Live data sync failed. Some metrics may be simulated.' 
+          error: 'Live data sync failed. Some metrics may be unavailable.' 
         }));
       }
     };
@@ -72,17 +66,7 @@ const MainDashboard = () => {
     fetchAnalytics();
   }, []);
 
-  const dummyRevenueData = [
-    { name: 'Jan', amount: 4000, count: 10 },
-    { name: 'Feb', amount: 3000, count: 8 },
-    { name: 'Mar', amount: 5000, count: 12 },
-    { name: 'Apr', amount: 4500, count: 11 },
-    { name: 'May', amount: 6000, count: 15 },
-    { name: 'Jun', amount: 5500, count: 14 },
-    { name: 'Jul', amount: 7000, count: 18 },
-  ];
-
-  const chartData = analytics.revenue.length > 0 ? analytics.revenue : dummyRevenueData;
+  const chartData = analytics.revenue;
 
   return (
     <div className="dashboard-container">
@@ -106,21 +90,21 @@ const MainDashboard = () => {
       <div className="dashboard-grid">
         <StatCard 
           title="Total Revenue" 
-          value={`₹${chartData.reduce((acc, curr) => acc + curr.amount, 0).toLocaleString()}`} 
+          value={`₹${(analytics.totalRevenue ?? 0).toLocaleString()}`} 
           trend={12.5} 
           icon={IndianRupee} 
           delay={0.1}
         />
         <StatCard 
           title="Total Owners" 
-          value={analytics.totalOwners || "84"} 
+          value={analytics.totalOwners ?? 0} 
           trend={4.2} 
           icon={Users} 
           delay={0.2}
         />
         <StatCard 
           title="Total Bookings" 
-          value={analytics.totalBookings || "1,248"} 
+          value={analytics.totalBookings ?? 0} 
           trend={8.1} 
           icon={CalendarCheck} 
           delay={0.3}
