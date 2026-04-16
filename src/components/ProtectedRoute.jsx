@@ -7,8 +7,8 @@ const ProtectedRoute = () => {
 
   if (loading) {
     return (
-      <div style={{ height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center', backgroundColor: '#050505' }}>
-        <p style={{ color: '#10b981', fontFamily: 'Outfit' }}>Loading Dashboard...</p>
+      <div style={{ height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center', backgroundColor: 'var(--color-background)' }}>
+        <p style={{ color: 'var(--color-primary)', fontFamily: 'Outfit', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', fontSize: '0.8rem' }}>Loading Dashboard...</p>
       </div>
     );
   }

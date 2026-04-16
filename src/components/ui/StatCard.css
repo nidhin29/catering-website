@@ -1,90 +1,95 @@
+/* ============================================================
+   StatCard — CaterCraft Admin Design System
+   ============================================================ */
+
 .stat-card {
   padding: 24px;
   position: relative;
   overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  min-height: 180px;
+  cursor: default;
 }
 
+/* ---- Header row (icon + trend) ---- */
 .stat-header {
   display: flex;
-  justify-content: space-between;
   align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 20px;
 }
 
 .stat-icon-wrap {
-  background: var(--accent-primary-glow);
-  color: var(--accent-primary);
-  width: 48px;
-  height: 48px;
-  border-radius: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: var(--transition-smooth);
+  width: 48px;
+  height: 48px;
+  background: rgba(99, 102, 241, 0.12);
+  border: 1px solid rgba(99, 102, 241, 0.2);
+  border-radius: 14px;
 }
 
-.stat-card:hover .stat-icon-wrap {
-  transform: scale(1.1);
-  box-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
+.stat-icon {
+  color: var(--color-primary) !important;
+  stroke: var(--color-primary) !important;
 }
 
+/* ---- Trend badge ---- */
 .stat-trend {
   display: flex;
   align-items: center;
   gap: 4px;
-  font-size: 0.8rem;
-  font-weight: 600;
-  padding: 4px 8px;
-  border-radius: 12px;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  font-size: 10px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
 }
 
 .stat-trend.up {
-  color: #10b981;
-  background: rgba(16, 185, 129, 0.1);
+  background: rgba(99, 102, 241, 0.12);
+  color: var(--color-primary);
+  border: 1px solid rgba(99, 102, 241, 0.2);
 }
 
 .stat-trend.down {
-  color: #ef4444;
-  background: rgba(239, 68, 68, 0.1);
+  background: rgba(244, 63, 94, 0.1);
+  color: var(--color-accent);
+  border: 1px solid rgba(244, 63, 94, 0.2);
 }
 
+/* ---- Stat info ---- */
 .stat-info {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
+  position: relative;
+  z-index: 1;
 }
 
 .stat-title {
-  color: var(--text-muted);
-  font-size: 0.9rem;
-  font-weight: 500;
+  font-size: 10px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--text-dim);
+  margin-bottom: 8px;
 }
 
 .stat-value {
   font-family: 'Outfit', sans-serif;
-  font-size: 2rem;
-  font-weight: 700;
+  font-size: 2.25rem;
+  font-weight: 900;
   color: #fff;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.03em;
+  line-height: 1;
 }
 
+/* ---- Visual glow orb ---- */
 .stat-visual-glow {
   position: absolute;
-  bottom: -40px;
-  right: -40px;
+  bottom: -30px;
+  right: -20px;
   width: 120px;
   height: 120px;
-  background: radial-gradient(circle, var(--accent-primary-glow) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.12) 0%, transparent 70%);
   border-radius: 50%;
   pointer-events: none;
-  opacity: 0.5;
-  transition: var(--transition-smooth);
-}
-
-.stat-card:hover .stat-visual-glow {
-  opacity: 1;
-  transform: scale(1.2);
 }

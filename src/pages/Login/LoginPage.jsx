@@ -43,13 +43,13 @@ const LoginPage = () => {
       
       <motion.div 
         className="login-glass-card glass-effect"
-        initial={{ opacity: 0, scale: 0.9 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.5 }}
+        initial={{ scale: 0.93, opacity: 0, y: 40 }}
+        animate={{ scale: 1, opacity: 1, y: 0 }}
+        transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
       >
         <div className="login-header">
           <div className="login-logo">
-            <ChefHat size={48} color="#10b981" />
+            <ChefHat size={40} color="#6366f1" />
           </div>
           <h1>EVENT<span>ADMIN</span></h1>
           <p>Executive Dashboard Access</p>

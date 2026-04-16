@@ -10,6 +10,7 @@ import MainDashboard from './pages/Dashboard/MainDashboard';
 import BookingManager from './pages/Bookings/BookingManager';
 import OwnersTable from './pages/Users/OwnersTable';
 import CustomersTable from './pages/Users/CustomersTable';
+import VerificationCenter from './pages/Users/VerificationCenter';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
           {/* Protected Dashboard Routes */}
           <Route element={<ProtectedRoute />}>
             <Route path="/" element={<Layout><MainDashboard /></Layout>} />
+            <Route path="/verify" element={<Layout><VerificationCenter /></Layout>} />
             <Route path="/bookings" element={<Layout><BookingManager /></Layout>} />
             <Route path="/owners" element={<Layout><OwnersTable /></Layout>} />
             <Route path="/customers" element={<Layout><CustomersTable /></Layout>} />

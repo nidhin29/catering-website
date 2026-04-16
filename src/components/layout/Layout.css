@@ -1,25 +1,127 @@
+/* ============================================================
+   Layout — CaterCraft Admin Design System
+   ============================================================ */
+
 .layout-container {
   display: flex;
   min-height: 100vh;
   width: 100%;
-  background: var(--bg-deep);
+  background: var(--color-background);
   position: relative;
 }
 
+/* ── Main viewport ── */
 .main-viewport {
   flex: 1;
   overflow-y: auto;
-  min-width: 0; /* Important for flex child with overflow */
+  min-width: 0;
+  /* On mobile, take the full width (sidebar is overlaid) */
 }
 
+/* ── Content wrap ── */
 .content-wrap {
   padding: 32px;
   max-width: 1400px;
   margin: 0 auto;
 }
 
-@media (max-width: 768px) {
+/* ── Mobile top-bar ── */
+.mobile-topbar {
+  display: none; /* hidden on desktop */
+}
+
+/* ── Sidebar backdrop overlay ── */
+.sidebar-overlay {
+  display: none;
+}
+
+/* ============================================================
+   Tablet  768–1023px
+   ============================================================ */
+@media (max-width: 1023px) {
+  .content-wrap {
+    padding: 24px;
+  }
+}
+
+/* ============================================================
+   Mobile  < 768px
+   ============================================================ */
+@media (max-width: 767px) {
+
+  /* Stack vertically: topbar on top, content below */
+  .layout-container {
+    flex-direction: column;
+  }
+
+  /* Content takes full width; no sidebar on the left */
+  .main-viewport {
+    width: 100%;
+  }
+
   .content-wrap {
     padding: 16px;
+  }
+
+  /* ── Sticky glass top-bar ── */
+  .mobile-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 16px;
+    height: 56px;
+    position: sticky;
+    top: 0;
+    z-index: 900;
+    background: rgba(10, 10, 11, 0.85);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--color-glass-border);
+    flex-shrink: 0;
+  }
+
+  .mobile-menu-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--color-glass-border);
+    border-radius: 10px;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: var(--transition-smooth);
+    flex-shrink: 0;
+  }
+
+  .mobile-menu-btn:hover {
+    background: rgba(99, 102, 241, 0.15);
+    border-color: rgba(99, 102, 241, 0.3);
+    color: var(--color-primary);
+  }
+
+  .mobile-logo {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 900;
+    font-size: 1rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #fff;
+  }
+
+  .mobile-logo span {
+    color: var(--color-primary);
+  }
+
+  /* ── Full-screen dark overlay behind drawer ── */
+  .sidebar-overlay {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.65);
+    z-index: 1500;
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
   }
 }

@@ -1,58 +1,59 @@
+/* ============================================================
+   GlassCard Container — CaterCraft Admin Design System
+   ============================================================ */
+
 .glass-card-container {
-  background: var(--bg-card);
-  backdrop-filter: var(--glass-blur);
-  -webkit-backdrop-filter: var(--glass-blur);
-  border: 1px solid var(--border-glass);
-  box-shadow: var(--glass-shadow);
-  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 1rem;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
   overflow: hidden;
-  position: relative;
   transition: var(--transition-smooth);
 }
 
 .glass-card-container:hover {
-  background: var(--bg-card-hover);
-  border-color: var(--border-glass-bright);
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.12);
 }
 
+/* ---- Card header ---- */
 .card-header {
-  padding: 20px 24px;
-  border-bottom: 1px solid var(--border-glass);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px 0;
+  margin-bottom: 4px;
 }
 
 .header-info {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 12px;
 }
 
 .title-icon {
-  color: var(--accent-primary);
-  background: var(--accent-primary-glow);
-  padding: 8px;
-  border-radius: 10px;
-  box-sizing: content-box;
-}
-
-.text-content {
-  display: flex;
-  flex-direction: column;
+  color: var(--color-primary) !important;
+  stroke: var(--color-primary) !important;
+  flex-shrink: 0;
 }
 
 .text-content h3 {
-  font-size: 1.1rem;
-  font-weight: 600;
-  margin: 0;
+  font-family: 'Outfit', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
   color: #fff;
+  letter-spacing: -0.01em;
 }
 
 .text-content p {
-  font-size: 0.85rem;
+  font-size: 0.78rem;
   color: var(--text-dim);
-  margin: 4px 0 0;
+  margin-top: 2px;
 }
 
+/* ---- Card body ---- */
 .card-body {
-  padding: 24px;
-  position: relative;
+  padding: 20px 24px 24px;
 }

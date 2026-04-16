@@ -14,8 +14,8 @@ const BookingManager = () => {
   useEffect(() => {
     const fetchBookings = async () => {
       try {
-        const data = await apiRequest('/Admin/view_all_bookings');
-        setBookings(data.bookings || []);
+        const response = await apiRequest('/api/v1/admin/view_all_bookings');
+        setBookings(response.data || response || []);
       } catch (err) {
         console.error('Failed to fetch bookings:', err);
         // Fallback for demo
@@ -44,50 +44,51 @@ const BookingManager = () => {
   const columns = [
     { 
       header: 'Booking ID', 
-      accessor: 'id',
-      cell: (row) => <span style={{ fontFamily: 'Outfit', fontWeight: 'bold', color: 'var(--accent-primary)' }}>#{row.id}</span>
+      accessor: '_id',
+      cell: (row) => <span style={{ fontFamily: 'Outfit', fontWeight: 'bold', color: 'var(--accent-primary)' }}>#{row._id?.slice(-6).toUpperCase()}</span>
     },
     { 
       header: 'Customer', 
-      accessor: 'customer',
+      accessor: 'customer_email',
       cell: (row) => (
-        <div style={{ fontWeight: '500' }}>{row.customer}</div>
+        <div style={{ fontWeight: '500' }}>{row.customer_email}</div>
       )
     },
     { 
-      header: 'Event Details', 
-      accessor: 'event',
+      header: 'Service', 
+      accessor: 'service.service_name',
       cell: (row) => (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-          <div style={{ color: '#fff' }}>{row.event}</div>
+          <div style={{ color: '#fff' }}>{row.service?.service_name || 'N/A'}</div>
           <div style={{ fontSize: '0.75rem', color: 'var(--text-dim)', display: 'flex', alignItems: 'center', gap: '4px' }}>
-            <Calendar size={12} /> {row.date}
+            <Calendar size={12} /> {row.datetime ? new Date(row.datetime).toLocaleDateString() : 'N/A'}
           </div>
         </div>
       )
     },
     { 
-      header: 'Location', 
-      accessor: 'location',
+      header: 'Owner', 
+      accessor: 'owner_email',
+      hideOnMobile: true,
       cell: (row) => (
         <div style={{ fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '4px' }}>
-          <MapPin size={14} className="text-muted" /> {row.location}
+          <Mail size={14} className="text-muted" /> {row.owner_email}
         </div>
       )
     },
     { 
       header: 'Status', 
-      accessor: 'status',
+      accessor: 'work_status',
       cell: (row) => (
-        <span className={`status-badge ${row.status.toLowerCase()}`}>
-          {row.status}
+        <span className={`status-badge ${(row.work_status || 'Pending').toLowerCase().replace(' ', '-')}`}>
+          {row.work_status || 'Pending'}
         </span>
       )
     },
     { 
       header: 'Total', 
-      accessor: 'amount',
-      cell: (row) => <span style={{ fontWeight: '600' }}>${row.amount.toLocaleString()}</span>
+      accessor: 'service.rate',
+      cell: (row) => <span style={{ fontWeight: '600' }}>₹{(row.service?.rate || 0).toLocaleString()}</span>
     },
     { 
       header: 'Actions', 

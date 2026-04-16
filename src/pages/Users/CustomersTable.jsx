@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Mail, Phone, Calendar, User, Search } from 'lucide-react';
+import { Mail, Phone, Calendar, Search } from 'lucide-react';
 import GlassCard from '../../components/ui/GlassCard';
 import DataTable from '../../components/ui/DataTable';
 import { apiRequest } from '../../api/api';
@@ -17,8 +17,8 @@ const CustomersTable = () => {
   const fetchCustomers = async () => {
     try {
       setLoading(true);
-      const data = await apiRequest('/Admin/get_all_customers');
-      setCustomers(data.customers || []);
+      const response = await apiRequest('/api/v1/admin/get_all_customers');
+      setCustomers(response.data || response || []);
     } catch (err) {
       console.error('Failed to fetch customers:', err);
       // Fallback
@@ -42,27 +42,28 @@ const CustomersTable = () => {
       header: 'Customer', 
       cell: (row) => (
         <div className="user-profile">
-          <div className="user-avatar" style={{ backgroundColor: 'var(--accent-secondary)' }}><User size={20} /></div>
+          <div className="user-avatar">{(row.fullName || row.name || 'C').charAt(0)}</div>
           <div className="user-info">
-             <div className="user-name">{row.name}</div>
+             <div className="user-name">{row.fullName || row.name}</div>
              <div className="user-email">{row.email}</div>
           </div>
         </div>
       )
     },
-    { header: 'Contact', accessor: 'phone' },
+    { header: 'Account Status', cell: (row) => (
+      <span className={`status-badge ${row.isEmailVerified ? 'completed' : 'pending'}`}>
+        {row.isEmailVerified ? 'Verified' : 'Unverified'}
+      </span>
+    )},
     { 
-      header: 'Recent Activity', 
+      header: 'Joined Date', 
+      hideOnMobile: true,
       cell: (row) => (
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--text-dim)', fontSize: '0.85rem' }}>
-          <Calendar size={14} /> {row.lastOrder}
+          <Calendar size={14} /> {row.createdAt ? new Date(row.createdAt).toLocaleDateString() : 'N/A'}
         </div>
       )
     },
-    { 
-      header: 'Spend', 
-      cell: (row) => <span style={{ fontWeight: '600', color: 'var(--accent-primary)' }}>${row.totalSpent.toLocaleString()}</span>
-    }
   ];
 
   return (

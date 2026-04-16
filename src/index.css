@@ -1,100 +1,250 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@300;400;500;600;700;800;900&display=swap');
 
+/* ============================================================
+   CaterCraft Admin — Design System Tokens
+   ============================================================ */
 :root {
-  /* Colors */
-  --bg-deep: #050505;
-  --bg-card: rgba(20, 20, 22, 0.7);
-  --bg-card-hover: rgba(30, 30, 35, 0.8);
-  
-  --accent-primary: #10b981; /* Emerald */
-  --accent-primary-glow: rgba(16, 185, 129, 0.2);
-  --accent-secondary: #3b82f6; /* Electric Blue */
-  
-  --text-main: #f8fafc;
+  /* Core Palette */
+  --color-background:    #0a0a0b;
+  --color-glass:         rgba(255, 255, 255, 0.03);
+  --color-glass-border:  rgba(255, 255, 255, 0.08);
+  --color-glass-border-bright: rgba(255, 255, 255, 0.15);
+  --color-primary:       #6366f1;
+  --color-primary-hover: #4f46e5;
+  --color-accent:        #f43f5e;
+
+  /* Text */
+  --text-main:  #f8fafc;
   --text-muted: #94a3b8;
-  --text-dim: #64748b;
-  
-  --border-glass: rgba(255, 255, 255, 0.08);
-  --border-glass-bright: rgba(255, 255, 255, 0.15);
-  
-  /* Shared Effects */
-  --glass-blur: blur(16px);
-  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
-  --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --text-dim:   #64748b;
+
+  /* Shadows & Effects */
+  --glass-blur:          blur(12px);
+  --glass-shadow:        0 8px 32px 0 rgba(0, 0, 0, 0.5);
+  --primary-glow:        rgba(99, 102, 241, 0.2);
+  --primary-glow-subtle: rgba(99, 102, 241, 0.1);
+  --accent-glow:         rgba(244, 63, 94, 0.05);
+  --transition-smooth:   all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Legacy aliases kept for backwards compat */
+  --bg-deep:              #0a0a0b;
+  --bg-card:              rgba(255, 255, 255, 0.03);
+  --bg-card-hover:        rgba(255, 255, 255, 0.06);
+  --accent-primary:       #6366f1;
+  --accent-primary-glow:  rgba(99, 102, 241, 0.15);
+  --accent-secondary:     #f43f5e;
+  --border-glass:         rgba(255, 255, 255, 0.08);
+  --border-glass-bright:  rgba(255, 255, 255, 0.15);
 }
 
-* {
+/* ============================================================
+   Reset
+   ============================================================ */
+*, *::before, *::after {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
+/* ============================================================
+   Body + Gradient Orbs
+   ============================================================ */
 body {
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  background-color: var(--bg-deep);
+  background-color: var(--color-background);
   color: var(--text-main);
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+  position: relative;
 }
 
+/* Two fixed radial gradient orbs on body */
+body::before,
+body::after {
+  content: '';
+  position: fixed;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Top-left — Indigo orb */
+body::before {
+  top: -20vh;
+  left: -15vw;
+  width: 60vw;
+  height: 60vh;
+  background: radial-gradient(ellipse at center, rgba(99, 102, 241, 0.10) 0%, transparent 70%);
+  background-attachment: fixed;
+}
+
+/* Top-right — Rose orb */
+body::after {
+  top: -10vh;
+  right: -10vw;
+  width: 50vw;
+  height: 50vh;
+  background: radial-gradient(ellipse at center, rgba(244, 63, 94, 0.05) 0%, transparent 70%);
+  background-attachment: fixed;
+}
+
+/* ============================================================
+   Typography
+   ============================================================ */
 h1, h2, h3, h4, h5, h6 {
   font-family: 'Outfit', sans-serif;
   color: #fff;
 }
 
+/* Headings: font-black tracking-tighter uppercase */
+h1 {
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+}
+
+h2 {
+  font-weight: 900;
+  letter-spacing: -0.03em;
+}
+
+h3 {
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+/* ============================================================
+   Custom Thin Scrollbar
+   ============================================================ */
 ::-webkit-scrollbar {
-  width: 6px;
+  width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--bg-deep);
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--border-glass);
-  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--border-glass-bright);
+  background: rgba(255, 255, 255, 0.2);
 }
 
-/* Glassmorphism Utility Classes */
-.glass-effect {
-  background: var(--bg-card);
-  backdrop-filter: var(--glass-blur);
-  -webkit-backdrop-filter: var(--glass-blur);
-  border: 1px solid var(--border-glass);
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.1) transparent;
+}
+
+/* ============================================================
+   Glass Card Utility
+   ============================================================ */
+.glass-card {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 1rem;
   box-shadow: var(--glass-shadow);
-  border-radius: 16px;
+}
+
+.glass-card:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+/* Glass Effect (alias used by older components) */
+.glass-effect {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: var(--glass-shadow);
+  border-radius: 1rem;
 }
 
 .glass-effect:hover {
-  background: var(--bg-card-hover);
-  border: 1px solid var(--border-glass-bright);
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.12);
 }
 
-.glass-card {
-  padding: 24px;
+/* ============================================================
+   Glass Button Utility
+   ============================================================ */
+.glass-button {
+  background: var(--color-primary);
+  color: #fff;
+  border: none;
+  border-radius: 0.75rem;
+  padding: 12px 24px;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 700;
+  font-size: 0.95rem;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  box-shadow: 0 0 20px rgba(99, 102, 241, 0.3), 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
-/* Animations from Tailwind-like utilities for use with framer-motion if needed */
-.fade-in-up {
-  animation: fadeInUp 0.6s ease-out forwards;
+.glass-button:hover {
+  background: var(--color-primary-hover);
+  box-shadow: 0 0 28px rgba(99, 102, 241, 0.45), 0 6px 16px rgba(0, 0, 0, 0.4);
+  transform: translateY(-1px);
 }
 
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.glass-button:active {
+  transform: translateY(0);
 }
 
-/* Responsive Grid layouts */
+.glass-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ============================================================
+   Glass Input Utility
+   ============================================================ */
+.glass-input {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.75rem;
+  color: var(--text-main);
+  padding: 12px 16px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.95rem;
+  transition: var(--transition-smooth);
+  outline: none;
+  width: 100%;
+}
+
+.glass-input::placeholder {
+  color: var(--text-dim);
+}
+
+.glass-input:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+  background: rgba(255, 255, 255, 0.07);
+}
+
+/* ============================================================
+   Badge / Label Utility
+   ============================================================ */
+.label-badge {
+  font-size: 10px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+}
+
+/* ============================================================
+   Layout Utilities
+   ============================================================ */
 .dashboard-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -105,6 +255,20 @@ h1, h2, h3, h4, h5, h6 {
   padding: 32px;
   max-width: 1400px;
   margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+/* ============================================================
+   Animations
+   ============================================================ */
+.fade-in-up {
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 @media (max-width: 768px) {

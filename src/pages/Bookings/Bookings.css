@@ -1,112 +1,221 @@
+/* ============================================================
+   Bookings Page — CaterCraft Admin Design System
+   ============================================================ */
+
 .bookings-page {
   display: flex;
   flex-direction: column;
   gap: 24px;
+  position: relative;
+  z-index: 1;
 }
 
+/* ── Page header ── */
 .page-header {
-  margin-bottom: 8px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--color-glass-border);
 }
 
+.page-header .header-text h1 {
+  font-family: 'Outfit', sans-serif;
+  font-size: 2rem;
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+  color: #fff;
+  line-height: 1;
+}
+
+.page-header .header-text p {
+  font-size: 0.875rem;
+  color: var(--text-dim);
+  margin-top: 6px;
+  line-height: 1.5;
+}
+
+/* ── Filter bar ── */
 .filter-bar {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 12px 24px;
-  gap: 20px;
-  background: var(--bg-card);
-  backdrop-filter: var(--glass-blur);
-  border-radius: 16px;
-  border: 1px solid var(--border-glass);
+  gap: 12px;
+  padding: 12px 16px;
+  flex-wrap: wrap;
 }
 
 .search-box {
-  flex: 1;
-  position: relative;
   display: flex;
   align-items: center;
+  gap: 10px;
+  flex: 1;
+  min-width: 160px;
 }
 
 .search-icon {
-  position: absolute;
-  left: 12px;
   color: var(--text-dim);
+  flex-shrink: 0;
+  transition: color 0.2s;
+}
+
+.search-box:focus-within .search-icon {
+  color: var(--color-primary);
 }
 
 .search-box input {
-  width: 100%;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid var(--border-glass);
-  border-radius: 12px;
-  padding: 10px 10px 10px 42px;
-  color: white;
-  font-size: 0.9rem;
-  transition: var(--transition-smooth);
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--text-main);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.875rem;
+  min-width: 0;
 }
 
-.search-box input:focus {
-  outline: none;
-  background: rgba(255, 255, 255, 0.08);
-  border-color: var(--accent-primary);
+.search-box input::placeholder {
+  color: var(--text-dim);
 }
 
 .filters {
   display: flex;
-  gap: 16px;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
 }
 
 .filter-group {
   display: flex;
   align-items: center;
-  gap: 10px;
-  color: var(--text-muted);
-  background: rgba(255, 255, 255, 0.05);
-  padding: 6px 12px;
-  border-radius: 10px;
-  border: 1px solid var(--border-glass);
+  gap: 8px;
+  color: var(--text-dim);
+  font-size: 0.875rem;
 }
 
 .filter-group select {
-  background: transparent;
-  border: none;
-  color: white;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  color: var(--text-main);
+  padding: 7px 12px;
+  font-family: 'Inter', sans-serif;
   font-size: 0.85rem;
-  font-weight: 500;
-  cursor: pointer;
   outline: none;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.filter-group select:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.15);
 }
 
 .filter-group select option {
-  background: #000;
-  color: white;
+  background: #1a1a1f;
 }
 
-.table-card .card-body {
-  padding: 0;
+/* ── Status badges ── */
+.status-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  font-size: 10px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
 }
 
+.status-badge.completed {
+  background: rgba(99, 102, 241, 0.12);
+  color: var(--color-primary);
+  border: 1px solid rgba(99, 102, 241, 0.2);
+}
+
+.status-badge.process {
+  background: rgba(251, 191, 36, 0.1);
+  color: #fbbf24;
+  border: 1px solid rgba(251, 191, 36, 0.2);
+}
+
+.status-badge.pending {
+  background: rgba(148, 163, 184, 0.08);
+  color: var(--text-muted);
+  border: 1px solid rgba(148, 163, 184, 0.15);
+}
+
+.status-badge.cancelled {
+  background: rgba(244, 63, 94, 0.1);
+  color: var(--color-accent);
+  border: 1px solid rgba(244, 63, 94, 0.2);
+}
+
+/* ── Action buttons ── */
 .action-btn-view {
-  background: var(--accent-primary-glow);
-  color: var(--accent-primary);
-  border: 1px solid rgba(16, 185, 129, 0.2);
-  padding: 6px;
-  border-radius: 8px;
-  cursor: pointer;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  transition: var(--transition-smooth);
+  width: 34px;
+  height: 34px;
+  background: rgba(99, 102, 241, 0.1);
+  border: 1px solid rgba(99, 102, 241, 0.2);
+  border-radius: 8px;
+  color: var(--color-primary);
+  cursor: pointer;
+  transition: all 0.2s;
 }
 
 .action-btn-view:hover {
-  background: var(--accent-primary);
-  color: #000;
+  background: rgba(99, 102, 241, 0.2);
+  border-color: rgba(99, 102, 241, 0.4);
+  transform: translateY(-1px);
 }
 
-@media (max-width: 768px) {
+/* ── Table card ── */
+.table-card {
+  width: 100%;
+}
+
+/* ── Shared text helpers ── */
+.text-muted { color: var(--text-muted); }
+.text-dim   { color: var(--text-dim); }
+
+/* ============================================================
+   Tablet  768–1023px
+   ============================================================ */
+@media (max-width: 1023px) {
+  .page-header .header-text h1 {
+    font-size: 1.75rem;
+  }
+}
+
+/* ============================================================
+   Mobile  < 768px
+   ============================================================ */
+@media (max-width: 767px) {
+  .page-header .header-text h1 {
+    font-size: 1.4rem;
+    letter-spacing: -0.02em;
+  }
+
   .filter-bar {
     flex-direction: column;
     align-items: stretch;
-    padding: 16px;
+    gap: 10px;
+  }
+
+  .search-box {
+    width: 100%;
+  }
+
+  .filters {
+    width: 100%;
+  }
+
+  .filter-group {
+    width: 100%;
+  }
+
+  .filter-group select {
+    flex: 1;
+    width: 100%;
   }
 }

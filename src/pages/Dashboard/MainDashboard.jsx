@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { 
-  DollarSign, 
+  IndianRupee, 
   Users, 
   CalendarCheck, 
   TrendingUp, 
@@ -32,22 +32,39 @@ const MainDashboard = () => {
   useEffect(() => {
     const fetchAnalytics = async () => {
       try {
-        const data = await apiRequest('/Admin/analytics/revenue');
-        // Structure: { revenueTrend: [], stats: { totalOwners: 0, totalBookings: 0 } }
+        const data = await apiRequest('/api/v1/admin/analytics/revenue');
+        // Backend returns an array of { _id (month), totalRevenue, count }
+        const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        
+        const formattedRevenue = (data.data || data).map(item => ({
+          name: monthNames[item._id - 1] || `Month ${item._id}`,
+          amount: item.totalRevenue,
+          count: item.count
+        }));
+
         setAnalytics({
-          revenue: data.revenueTrend || [],
-          totalOwners: data.stats?.totalOwners || 0,
-          totalBookings: data.stats?.totalBookings || 0,
+          revenue: formattedRevenue,
+          totalOwners: 0, // Will fetch separately or from same endpoint if updated
+          totalBookings: formattedRevenue.reduce((acc, curr) => acc + curr.count, 0),
           loading: false,
           error: ''
         });
+
+        // Fetch other stats
+        const ownersData = await apiRequest('/api/v1/admin/view_all_owners');
+        const ownersCount = (ownersData.owners || ownersData.data || []).length;
+        
+        setAnalytics(prev => ({
+          ...prev,
+          totalOwners: ownersCount
+        }));
+
       } catch (err) {
         console.error('Failed to fetch analytics:', err);
-        // Fallback for demo/dev if backend not fully ready
         setAnalytics(prev => ({ 
           ...prev, 
           loading: false, 
-          error: 'Unable to connect to live analytics. Displaying cached data.' 
+          error: 'Live data sync failed. Some metrics may be simulated.' 
         }));
       }
     };
@@ -56,13 +73,13 @@ const MainDashboard = () => {
   }, []);
 
   const dummyRevenueData = [
-    { name: 'Jan', amount: 4000 },
-    { name: 'Feb', amount: 3000 },
-    { name: 'Mar', amount: 5000 },
-    { name: 'Apr', amount: 4500 },
-    { name: 'May', amount: 6000 },
-    { name: 'Jun', amount: 5500 },
-    { name: 'Jul', amount: 7000 },
+    { name: 'Jan', amount: 4000, count: 10 },
+    { name: 'Feb', amount: 3000, count: 8 },
+    { name: 'Mar', amount: 5000, count: 12 },
+    { name: 'Apr', amount: 4500, count: 11 },
+    { name: 'May', amount: 6000, count: 15 },
+    { name: 'Jun', amount: 5500, count: 14 },
+    { name: 'Jul', amount: 7000, count: 18 },
   ];
 
   const chartData = analytics.revenue.length > 0 ? analytics.revenue : dummyRevenueData;
@@ -89,9 +106,9 @@ const MainDashboard = () => {
       <div className="dashboard-grid">
         <StatCard 
           title="Total Revenue" 
-          value={`$${chartData.reduce((acc, curr) => acc + curr.amount, 0).toLocaleString()}`} 
+          value={`₹${chartData.reduce((acc, curr) => acc + curr.amount, 0).toLocaleString()}`} 
           trend={12.5} 
-          icon={DollarSign} 
+          icon={IndianRupee} 
           delay={0.1}
         />
         <StatCard 
@@ -123,9 +140,9 @@ const MainDashboard = () => {
               <AreaChart data={chartData}>
                 <defs>
                   <linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#10b981" stopOpacity={0.3}/>
-                    <stop offset="95%" stopColor="#10b981" stopOpacity={0}/>
-                  </linearGradient>
+                     <stop offset="5%" stopColor="#6366f1" stopOpacity={0.3}/>
+                     <stop offset="95%" stopColor="#6366f1" stopOpacity={0}/>
+                   </linearGradient>
                 </defs>
                 <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" vertical={false} />
                 <XAxis 
@@ -142,7 +159,7 @@ const MainDashboard = () => {
                   tickLine={false} 
                   axisLine={false}
                   dx={-10}
-                  tickFormatter={(value) => `$${value}`}
+                  tickFormatter={(value) => `₹${value}`}
                 />
                 <Tooltip 
                   contentStyle={{ 
@@ -151,12 +168,12 @@ const MainDashboard = () => {
                     borderRadius: '12px',
                     color: '#fff' 
                   }}
-                  itemStyle={{ color: '#10b981' }}
+                  itemStyle={{ color: '#6366f1' }}
                 />
                 <Area 
                   type="monotone" 
                   dataKey="amount" 
-                  stroke="#10b981" 
+                  stroke="#6366f1" 
                   strokeWidth={3}
                   fillOpacity={1} 
                   fill="url(#colorRevenue)" 
