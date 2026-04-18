@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Search, Filter, Calendar, MapPin, Eye, Clock } from 'lucide-react';
+import { Search, Filter, Calendar, MapPin, Eye, Clock, Mail } from 'lucide-react';
 import GlassCard from '../../components/ui/GlassCard';
 import DataTable from '../../components/ui/DataTable';
 import { apiRequest } from '../../api/api';
@@ -34,10 +34,10 @@ const BookingManager = () => {
   }, []);
 
   const filteredBookings = bookings.filter(b => {
-    const matchesSearch = b.customer?.toLowerCase().includes(searchTerm.toLowerCase()) || 
-                          b.event?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                          b.id?.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesFilter = statusFilter === 'All' || b.status === statusFilter;
+    const matchesSearch = b.customer_email?.toLowerCase().includes(searchTerm.toLowerCase()) || 
+                          b.service?.service_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                          b._id?.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesFilter = statusFilter === 'All' || b.work_status === statusFilter;
     return matchesSearch && matchesFilter;
   });
 
@@ -86,9 +86,23 @@ const BookingManager = () => {
       )
     },
     { 
-      header: 'Total', 
-      accessor: 'service.rate',
-      cell: (row) => <span style={{ fontWeight: '600' }}>₹{(row.service?.rate || 0).toLocaleString()}</span>
+      header: 'Payment', 
+      accessor: 'payment_status',
+      cell: (row) => (
+        <span className={`status-badge ${(row.payment_status || 'Unpaid').toLowerCase()}`}>
+          {row.payment_status || 'Unpaid'}
+        </span>
+      )
+    },
+    { 
+      header: 'Total Earnings', 
+      accessor: 'owner_payout',
+      cell: (row) => (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+          <span style={{ fontWeight: '700', color: 'var(--accent-primary)' }}>₹{(row.owner_payout || (row.service?.rate * 0.9) || 0).toLocaleString()}</span>
+          <span style={{ fontSize: '0.65rem', color: 'var(--text-dim)' }}>Value: ₹{(row.service?.rate || 0).toLocaleString()}</span>
+        </div>
+      )
     },
     { 
       header: 'Actions', 
@@ -124,9 +138,11 @@ const BookingManager = () => {
             <Filter size={18} />
             <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}>
               <option value="All">All Statuses</option>
-              <option value="Completed">Completed</option>
-              <option value="Process">In Process</option>
               <option value="Pending">Pending</option>
+              <option value="Approved">Approved</option>
+              <option value="In Kitchen">In Kitchen</option>
+              <option value="Dispatched">Dispatched</option>
+              <option value="Completed">Completed</option>
               <option value="Cancelled">Cancelled</option>
             </select>
           </div>

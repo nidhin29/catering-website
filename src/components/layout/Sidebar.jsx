@@ -51,8 +51,10 @@ const Sidebar = ({ isMobile = false, isOpen = false, onClose = () => {} }) => {
             {/* Close button */}
             <div className="sidebar-header">
               <div className="logo">
-                <div className="logo-icon"><ChefHat size={24} color="#6366f1" /></div>
-                <span>EVENT<span>ADMIN</span></span>
+                <div className="logo-icon" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(255,255,255,0.05)', borderRadius: '8px', padding: '4px' }}>
+                  <img src="/logo.png" alt="Logo" style={{ width: '24px', height: '24px', objectFit: 'contain' }} />
+                </div>
+                <span>CATER<span>CRAFT</span></span>
               </div>
               <button className="collapse-btn" onClick={onClose} aria-label="Close menu">
                 <X size={20} />
@@ -110,8 +112,12 @@ const Sidebar = ({ isMobile = false, isOpen = false, onClose = () => {} }) => {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -20 }}
             >
-              <div className="logo-icon"><ChefHat size={24} color="#6366f1" /></div>
-              <span>EVENT<span>ADMIN</span></span>
+              <div className="logo">
+                <div className="logo-icon" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(255,255,255,0.05)', borderRadius: '8px', padding: '4px' }}>
+                  <img src="/logo.png" alt="Logo" style={{ width: '24px', height: '24px', objectFit: 'contain' }} />
+                </div>
+                <span>CATER<span>CRAFT</span></span>
+              </div>
             </motion.div>
           )}
         </AnimatePresence>

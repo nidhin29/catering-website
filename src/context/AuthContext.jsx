@@ -21,9 +21,21 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Rely on persisted adminUser for UI state
-    // Real session validation happens via cookies in api calls
-    setLoading(false);
+    const initializeAuth = async () => {
+      try {
+        if (adminUser) {
+          // Verify session with server on load
+          await apiRequest('/api/v1/auth/validate-token');
+        }
+      } catch (error) {
+        console.error('Session validation failed on startup:', error);
+        // apiRequest will handle the redirect on 401
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    initializeAuth();
   }, []);
 
   const login = async (email, password) => {

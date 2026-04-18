@@ -19,10 +19,24 @@ export const apiRequest = async (path, options = {}) => {
   console.log(`[API Request] ${options.method || 'GET'} ${BASE_URL}${path} | Status: ${response.status}`);
 
   // Handle common authentication errors
-  if (response.status === 401 || response.status === 403) {
-    // Only clear and redirect if we're not currently on the login page
-    if (!window.location.pathname.includes('/login')) {
-      localStorage.removeItem('adminToken');
+  if (response.status === 401) {
+    // Only attempt refresh if we're not currently on the login page and not already calling refresh
+    if (!window.location.pathname.includes('/login') && path !== '/api/v1/user/auth/refresh-token') {
+      try {
+        const refreshResponse = await fetch(`${BASE_URL}/api/v1/auth/refresh-token`, {
+          method: 'POST',
+          credentials: 'include',
+          headers: { 'Content-Type': 'application/json' }
+        });
+
+        if (refreshResponse.ok) {
+          // Retry the original request
+          return apiRequest(path, options);
+        }
+      } catch (e) {
+        console.error('Silent refresh failed:', e);
+      }
+
       localStorage.removeItem('adminUser');
       window.location.replace('/login');
     }
