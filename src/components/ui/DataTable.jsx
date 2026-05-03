@@ -19,7 +19,7 @@ const DataTable = ({ columns, data, loading, emptyMessage = 'No data available' 
             {columns.map((column, index) => (
               <th
                 key={index}
-                style={{ width: column.width }}
+                style={{ width: column.width, textAlign: column.align || 'left' }}
                 className={column.hideOnMobile ? 'hide-mobile' : ''}
               >
                 {column.header}
@@ -34,6 +34,7 @@ const DataTable = ({ columns, data, loading, emptyMessage = 'No data available' 
                 {columns.map((column, colIndex) => (
                   <td
                     key={colIndex}
+                    style={{ textAlign: column.align || 'left' }}
                     className={column.hideOnMobile ? 'hide-mobile' : ''}
                   >
                     {column.cell ? column.cell(row) : row[column.accessor]}

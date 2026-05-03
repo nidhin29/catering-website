@@ -103,16 +103,9 @@ const BookingManager = () => {
           <span style={{ fontSize: '0.65rem', color: 'var(--text-dim)' }}>Value: ₹{(row.service?.rate || 0).toLocaleString()}</span>
         </div>
       )
-    },
-    { 
-      header: 'Actions', 
-      cell: (row) => (
-        <button className="action-btn-view">
-          <Eye size={18} />
-        </button>
-      )
     }
   ];
+
 
   return (
     <div className="bookings-page">

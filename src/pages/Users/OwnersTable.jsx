@@ -64,8 +64,9 @@ const OwnersTable = () => {
     },
     { 
       header: 'Username', 
+      align: 'center',
       cell: (row) => (
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
           <span className="text-dim">@</span>
           <span>{row.username}</span>
         </div>
@@ -73,9 +74,10 @@ const OwnersTable = () => {
     },
     { 
       header: 'Status', 
+      align: 'center',
       hideOnMobile: true,
       cell: (row) => (
-         <div className="contact-info">
+         <div className="contact-info" style={{ alignItems: 'center' }}>
             <span className={`status-badge ${row.verificationStatus}`}>
               {row.verificationStatus?.toUpperCase() || 'UNKNOWN'}
             </span>
@@ -84,15 +86,16 @@ const OwnersTable = () => {
     },
     { 
       header: 'Joined', 
+      align: 'center',
       cell: (row) => row.createdAt ? new Date(row.createdAt).toLocaleDateString() : 'N/A'
     },
     { 
       header: 'Management', 
+      align: 'center',
       cell: (row) => (
-        <div className="table-actions">
-          <button className="action-btn-view" title="View Details"><ExternalLink size={18} /></button>
-          <button className="action-btn-delete" title="Delete Owner" onClick={() => handleDelete(row)}><Trash2 size={18} /></button>
-        </div>
+        <button className="action-btn-delete" title="Delete Owner" onClick={() => handleDelete(row)}>
+          <Trash2 size={18} />
+        </button>
       )
     }
   ];

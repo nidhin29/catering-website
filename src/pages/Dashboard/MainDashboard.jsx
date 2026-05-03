@@ -89,7 +89,7 @@ const MainDashboard = () => {
 
       <div className="dashboard-grid">
         <StatCard 
-          title="Total Revenue" 
+          title="Platform Earnings" 
           value={`₹${(analytics.totalRevenue ?? 0).toLocaleString()}`} 
           trend={12.5} 
           icon={IndianRupee} 
@@ -114,8 +114,8 @@ const MainDashboard = () => {
       <div className="dashboard-charts-row">
         <GlassCard 
           className="revenue-chart-card"
-          title="Revenue Growth" 
-          subtitle="Monthly revenue trend analysis"
+          title="Earnings Growth" 
+          subtitle="Monthly earnings trend analysis"
           icon={TrendingUp}
           delay={0.4}
         >
